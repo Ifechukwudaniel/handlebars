@@ -10,11 +10,14 @@
        </tr>
    </thead>
     <tbody>
+        {{#each posts}}
        <tr>
-        <td>Id</td>
-        <td>Title</td>
-        <td>Allow Comment</td>
-        <td>Staus</td>
+        <td>{{_id}}</td>
+        <td>{{title}}</td>
+        <td>{{allowComments}}</td>
+        <td>{{status}}</td>
+        <td><a class="btn btn-primary" href="/admin/posts/edit/{{_id}}">Edit </a></td>
        </tr>
+       {{/each}}
     </tbody>
 </table>

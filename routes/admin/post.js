@@ -10,9 +10,9 @@ router.all('/*', (req, res, next) => {
 
 router.get('/', (req, res) => {
     Post.find({})
-    .then(post=>{
-        res.render("admin/post/index",{
-            post: post
+    .then(posts=>{
+        res.render("admin/posts/index",{
+            posts: posts
         });
     })
     .catch(err=>{
@@ -22,9 +22,11 @@ router.get('/', (req, res) => {
 });
 
 
+//create a post
 router.get('/create', (req, res) => {
-    res.render("admin/post/create");
+    res.render("admin/posts/create");
 });
+
 
 router.post('/create', (req, res) => {
     let allowComments = true
@@ -48,6 +50,19 @@ router.post('/create', (req, res) => {
     })
     .catch(err=>{
         console.log(` err ${err}`)
+    })
+});
+
+
+//edit a post
+router.get('/edit/:id', (req, res) => {
+    const id = req.params.id
+    Post.findOne({_id:id})
+    .then(post=>{
+       res.render("admin/posts/edit");
+    })
+    .catch(err=>{
+
     })
 });
 
