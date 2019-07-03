@@ -69,17 +69,15 @@ router.get('/edit/:id', (req, res) => {
 });
 
 router.post('/edit/:id', (req, res) => {
-     const id= req.params.id
-
-     let allowComments = true
-     if(req.body.allowComments && req.body.allowComments!=="off"){
-         allowComments=true
-     } 
-     else{
-         allowComments=false
-     }
-     Post.findByIdAndUpdate({_id:id})
+     Post.findOne({_id:req.params.id})
      .then(post=>{
+        let allowComments = true
+        if(req.body.allowComments && req.body.allowComments!=="off"){
+            allowComments=true
+        } 
+        else{
+            allowComments=false
+        }
          post.title = req.body.title
          post.status= req.body.status
          post.allowComments=allowComments,
