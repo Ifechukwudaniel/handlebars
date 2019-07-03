@@ -9,8 +9,10 @@ const bodyParser = require("body-parser")
 
 mongoose.Promise = global.Promise
 
-//use body parser 
+// helper  function
+const {select} = require("./helpers/helper-handlebars")
 
+//use body parser 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -23,9 +25,11 @@ mongoose.connect("mongodb://localhost/cms", {useNewUrlParser:true})
     console.log(err)
 })
 
+//for our public dir
 app.use(express.static(path.join(__dirname,'public')));
 
-app.engine("handlebars", exphan({defaultLayout:"home"}))
+//handlebar 
+app.engine("handlebars", exphan({defaultLayout:"home",helpers:{select: select}}))
 app.set('view engine', 'handlebars');
 
 //home route

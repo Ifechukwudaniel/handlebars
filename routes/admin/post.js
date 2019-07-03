@@ -22,12 +22,12 @@ router.get('/', (req, res) => {
 });
 
 
-//create a post
+//create a post fprm
 router.get('/create', (req, res) => {
     res.render("admin/posts/create");
 });
 
-
+//submit post data in the databse
 router.post('/create', (req, res) => {
     let allowComments = true
     if(req.body.allowComments && req.body.allowComments!=="off"){
@@ -54,16 +54,44 @@ router.post('/create', (req, res) => {
 });
 
 
-//edit a post
+//edit a post form
 router.get('/edit/:id', (req, res) => {
     const id = req.params.id
     Post.findOne({_id:id})
     .then(post=>{
-       res.render("admin/posts/edit");
+       res.render("admin/posts/edit", {
+           post:post
+       });
     })
     .catch(err=>{
-
+     
     })
+});
+
+router.post('/edit/:id', (req, res) => {
+     const id= req.params.id
+
+     let allowComments = true
+     if(req.body.allowComments && req.body.allowComments!=="off"){
+         allowComments=true
+     } 
+     else{
+         allowComments=false
+     }
+     Post.findByIdAndUpdate({_id:id})
+     .then(post=>{
+         post.title = req.body.title
+         post.status= req.body.status
+         post.allowComments=allowComments,
+         post.body = req.body.body
+         post.save()
+         .then(data=>{
+              res.redirect('/admin/posts');;
+         })
+     })
+     .catch(err=>{
+         console.log(err)
+     })
 });
 
 module.exports = router

@@ -1,50 +1,35 @@
 <h1>Edit Post</h1>
 
-<form action="/admin/posts/edit/{{id}}" method="post">
+<form action="/admin/posts/edit/{{post._id}}" method="post">
     <div class="form-group">
         <label for="title">Title</label>
-        <input required name="title" type="text" class="form-control" id="title" placeholder="Enter title" >
+        <input required name="title" type="text" class="form-control" id="title" value="{{post.title}}" >
     </div>
-
-    <div class="form-group">
-        <label for="file">File Upload</label>
-        <input type="file" name="file" class="form-control" >
-    </div>
-
-    <div class="form-group">
-        <label for="status">Category</label>
-        <select name="category" id="status" class="form-control">
-
-
-        </select>
-    </div>
-
-
     <div class="form-group">
         <label for="status">Status</label>
         <select name="status" id="status" class="form-control">
+              {{#select post.status}} 
             <option value="public">Public</option>
             <option value="private">Private</option>
             <option value="draft">Draft</option>
+            {{/select}}
         </select>
     </div>
 
-
-
     <div class="form-check">
         <label for="allowComments" class="form-check-label">
-        <input name="allowComments" type="checkbox" class="form-check-input" id="allowComments">
+        <input name="allowComments" type="checkbox" class="form-check-input"  {{#if post.allowComments}} checked  {{/if}} id="allowComments">
             Allow Comments
         </label>
     </div>
 
     <div class="form-group">
         <label for="body">Body</label>
-        <textarea required  name="body" cols="30" rows="10" class="form-control" id="body" placeholder="Enter Description"></textarea>
+        <textarea required  name="body" cols="30" rows="10" class="form-control" id="body">{{post.body}}</textarea>
     </div>
 
 
-    <button type="submit" class="btn btn-primary">Create Post</button>
+    <button type="submit" class="btn btn-primary">Edit Post</button>
 
 
 </form>
