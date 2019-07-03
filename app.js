@@ -7,7 +7,7 @@ const mongoose =require("mongoose")
 //mongoose connetion
 mongoose.connect("mongodb://localhost/cms", {useNewUrlParser:true})
 .then(db=>{
-    console.log("conneted to databse")
+    console.log("conneted to database")
 })
 .catch(err=>{
     console.log(err)

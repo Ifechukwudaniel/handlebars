@@ -8,9 +8,13 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-    res.send("it works");
+    res.render("admin/post/index");
 });
 
+
+router.get('/create', (req, res) => {
+    res.render("admin/post/create");
+});
 
 module.exports = router
 
