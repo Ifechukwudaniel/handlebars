@@ -92,5 +92,16 @@ router.post('/edit/:id', (req, res) => {
      })
 });
 
+router.post('/delete/:id', (req, res) => {
+    console.log("hete")
+    Post.deleteOne({_id:req.params.id})
+    .then(data=>{
+         res.redirect("/admin/posts");
+    })
+
+});
+
+
+
 module.exports = router
 
