@@ -29,23 +29,28 @@ router.get('/create', (req, res) => {
 
 //submit post data in the databse
 router.post('/create', (req, res) => {
-    console.log(req.files)
-    let allowComments = true
-    if(req.body.allowComments && req.body.allowComments!=="off"){
-        allowComments=true
+    const file = req.files.file
+    let filename= file.name
+    file.mv('./public/uploads/'+filename, (err)=>{
+        if(err)throw err
+    })
+
+    let allowcomments = true
+    if(req.body.allowcomments && req.body.allowcomments!=="off"){
+        allowcomments=true
     } 
     else{
-        allowComments=false
+        allowcomments=false
     }
 
-    const newPost = new  Post({
+    const newpost = new  post({
         title: req.body.title,
         status:req.body.status,
-        allowComments: allowComments,
+        allowcomments: allowcomments,
         body: req.body.body
     })
 
-    newPost.save()
+    newpost.save()
     .then(()=>{
          res.redirect('/admin/posts');
     })
@@ -94,7 +99,6 @@ router.post('/edit/:id', (req, res) => {
 });
 
 router.post('/delete/:id', (req, res) => {
-    console.log("hete")
     Post.deleteOne({_id:req.params.id})
     .then(data=>{
          res.redirect("/admin/posts");

@@ -4,6 +4,7 @@ const app = express()
 const exphan= require("express-handlebars")
 const mongoose =require("mongoose")
 const bodyParser = require("body-parser")
+const upload = require("express-fileupload")
 
 //plugin mongoose function
 
@@ -15,6 +16,9 @@ const {select} = require("./helpers/helper-handlebars")
 //use body parser 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+//use express fileupload
+app.use(upload());
 
 //mongoose connetion
 mongoose.connect("mongodb://localhost/cms", {useNewUrlParser:true})
@@ -38,7 +42,7 @@ const admin = require("./routes/admin/index")
 const home= require("./routes/home/index")
 const posts = require("./routes/admin/post")
 app.use("/admin", admin);
-app.use("/home", home);
+app.use("/", home);
 app.use("/admin/posts", posts);
 
 app.listen(3000, () => {
