@@ -8,6 +8,10 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res) => {
+    req.session.test="bla"
+    if (req.session.test) {
+         console.log(`we have ${req.session.test}`)
+    }
     res.render("home/index");
 });
 

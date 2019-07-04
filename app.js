@@ -6,7 +6,7 @@ const mongoose =require("mongoose")
 const bodyParser = require("body-parser")
 const upload = require("express-fileupload")
 const session = require("express-session")
-const conflash = require("connect-flash")
+const flash = require("connect-flash")
 
 //plugin mongoose function
 
@@ -33,6 +33,24 @@ mongoose.connect("mongodb://localhost/cms", {useNewUrlParser:true})
 
 //for our public dir
 app.use(express.static(path.join(__dirname,'public')));
+
+//using flash 
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true,
+  }))
+
+//flash
+app.use(flash())
+
+//Flash to local variable
+app.use((req, res, next) => {
+
+    res.locals.success_message= req.flash("success_message")   
+    next()
+
+});
 
 //handlebar 
 app.engine("handlebars", exphan({defaultLayout:"home",helpers:{select: select}}))

@@ -74,7 +74,8 @@ router.post('/create', (req, res) => {
         })
 
         newpost.save()
-        .then(()=>{
+        .then(savedPost=>{
+            req.flash("success_message", `Post ${savedPost.title} was created sucessfully`)
             res.redirect('/admin/posts');
         })
         .catch(err=>{
@@ -126,7 +127,8 @@ router.post('/delete/:id', (req, res) => {
     Post.findOne({_id:req.params.id})
     .then(post=>{
         fs.unlink(UploadPath+post.file, (err)=>{
-            console.log("dwjjjd"+err)}
+            if(err) return err
+         }
          )
          Post.deleteOne({_id:post._id})
          .then(()=>{
