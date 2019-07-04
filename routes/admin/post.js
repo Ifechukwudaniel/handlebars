@@ -35,8 +35,13 @@ router.post('/create', (req, res) => {
    let errors = []
 
    if (!req.body.title) {
-       errors.push({message:"please add a title"})
+       errors.push({message:"Please add a Title"})
    }
+   
+   if (!req.body.title) {
+    errors.push({message:"Please add a Description"})
+    }
+
 
    if (errors.length>0) {
     res.render("admin/posts/create",{
