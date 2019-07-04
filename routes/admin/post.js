@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Post = require("../../models/Post")
-
+const {isEmpty} = require("../../helpers/upload-heplper")
+const uuid = require("uuid/v1")
 router.all('/*', (req, res, next) => {
     req.app.locals.layout ="admin"
     next()
@@ -29,12 +30,14 @@ router.get('/create', (req, res) => {
 
 //submit post data in the databse
 router.post('/create', (req, res) => {
-    const file = req.files.file
-    let filename= file.name
-    file.mv('./public/uploads/'+filename, (err)=>{
+    let filename= ""
+    if (!isEmpty(req.files)) {
+        const file = req.files.file
+        filename=  `${uuid().toString()}${file.name}`
+        file.mv('./public/uploads/'+filename, (err)=>{
         if(err)throw err
-    })
-
+    })   
+    }
     let allowcomments = true
     if(req.body.allowcomments && req.body.allowcomments!=="off"){
         allowcomments=true
@@ -43,11 +46,12 @@ router.post('/create', (req, res) => {
         allowcomments=false
     }
 
-    const newpost = new  post({
+    const newpost = new  Post({
         title: req.body.title,
         status:req.body.status,
         allowcomments: allowcomments,
-        body: req.body.body
+        body: req.body.body,
+        file: filename
     })
 
     newpost.save()
