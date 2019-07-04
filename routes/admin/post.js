@@ -109,13 +109,22 @@ router.post('/edit/:id', (req, res) => {
         else{
             allowComments=false
         }
+        let filename= ""
+        if (!isEmpty(req.files)) {
+            const file = req.files.file
+            filename=  `${uuid().toString()}${file.name}`
+            file.mv('./public/uploads/'+filename, (err)=>{
+            if(err)throw err
+        })}
          post.title = req.body.title
          post.status= req.body.status
          post.allowComments=allowComments,
          post.body = req.body.body
+         post.file=filename
          post.save()
          .then(data=>{
-              res.redirect('/admin/posts');;
+            req.flash("success_message", `update was created sucessfully`)
+            res.redirect('/admin/posts');;
          })
      })
      .catch(err=>{
@@ -132,6 +141,7 @@ router.post('/delete/:id', (req, res) => {
          )
          Post.deleteOne({_id:post._id})
          .then(()=>{
+            req.flash("success_message", `Delete was created sucessfully`)
             res.redirect("/admin/posts");
          })
     })
