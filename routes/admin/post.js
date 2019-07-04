@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require("../../models/Post")
-const {isEmpty,UploadPath} = require("../../helpers/upload-heplper")
+const {isEmpty,UploadPath,I} = require("../../helpers/upload-heplper")
 const uuid = require("uuid/v1")
 const fs = require("fs")
 
@@ -32,37 +32,50 @@ router.get('/create', (req, res) => {
 
 //submit post data in the databse
 router.post('/create', (req, res) => {
-    let filename= ""
-    if (!isEmpty(req.files)) {
-        const file = req.files.file
-        filename=  `${uuid().toString()}${file.name}`
-        file.mv('./public/uploads/'+filename, (err)=>{
-        if(err)throw err
-    })   
-    }
-    let allowcomments = true
-    if(req.body.allowcomments && req.body.allowcomments!=="off"){
-        allowcomments=true
-    } 
-    else{
-        allowcomments=false
-    }
+   let errors = []
 
-    const newpost = new  Post({
-        title: req.body.title,
-        status:req.body.status,
-        allowcomments: allowcomments,
-        body: req.body.body,
-        file: filename
-    })
+   if (!req.body.title) {
+       errors.push({message:"please add a title"})
+   }
 
-    newpost.save()
-    .then(()=>{
-         res.redirect('/admin/posts');
-    })
-    .catch(err=>{
-        console.log(` err ${err}`)
-    })
+   if (errors.length>0) {
+    res.render("admin/posts/create",{
+        errors:errors
+    }); 
+   }
+   else{
+        let filename= ""
+        if (!isEmpty(req.files)) {
+            const file = req.files.file
+            filename=  `${uuid().toString()}${file.name}`
+            file.mv('./public/uploads/'+filename, (err)=>{
+            if(err)throw err
+        })   
+        }
+        let allowcomments = true
+        if(req.body.allowcomments && req.body.allowcomments!=="off"){
+            allowcomments=true
+        } 
+        else{
+            allowcomments=false
+        }
+
+        const newpost = new  Post({
+            title: req.body.title,
+            status:req.body.status,
+            allowcomments: allowcomments,
+            body: req.body.body,
+            file: filename
+        })
+
+        newpost.save()
+        .then(()=>{
+            res.redirect('/admin/posts');
+        })
+        .catch(err=>{
+            console.log(` err ${err}`)
+        })
+    }
 });
 
 
@@ -108,7 +121,7 @@ router.post('/delete/:id', (req, res) => {
     Post.findOne({_id:req.params.id})
     .then(post=>{
         fs.unlink(UploadPath+post.file, (err)=>{
-            console.log(err)}
+            console.log("dwjjjd"+err)}
          )
          Post.deleteOne({_id:post._id})
          .then(()=>{

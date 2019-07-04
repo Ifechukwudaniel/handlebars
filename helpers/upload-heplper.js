@@ -6,5 +6,11 @@ module.exports= {
                if(obj.hasOwnProperty(key)) return false
                return true
           }   
+       },
+       isFile: function(obj) {
+          if (obj.file!=null) {
+             return true
+            }
+          return false
        }
 }
