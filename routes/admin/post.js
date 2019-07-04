@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Post = require("../../models/Post")
-const {isEmpty} = require("../../helpers/upload-heplper")
+const {isEmpty,UploadPath} = require("../../helpers/upload-heplper")
 const uuid = require("uuid/v1")
+const fs = require("fs")
+
 router.all('/*', (req, res, next) => {
     req.app.locals.layout ="admin"
     next()
@@ -103,9 +105,15 @@ router.post('/edit/:id', (req, res) => {
 });
 
 router.post('/delete/:id', (req, res) => {
-    Post.deleteOne({_id:req.params.id})
-    .then(data=>{
-         res.redirect("/admin/posts");
+    Post.findOne({_id:req.params.id})
+    .then(post=>{
+        fs.unlink(UploadPath+post.file, (err)=>{
+            console.log(err)}
+         )
+         Post.deleteOne({_id:post._id})
+         .then(()=>{
+            res.redirect("/admin/posts");
+         })
     })
 
 });
