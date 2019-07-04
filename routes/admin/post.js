@@ -29,6 +29,7 @@ router.get('/create', (req, res) => {
 
 //submit post data in the databse
 router.post('/create', (req, res) => {
+    console.log(req.files)
     let allowComments = true
     if(req.body.allowComments && req.body.allowComments!=="off"){
         allowComments=true
