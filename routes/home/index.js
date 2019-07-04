@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const Post = require("../../models/Post")
 
 router.all('/*', (req, res, next) => {
     req.app.locals.layout ='home'
@@ -8,11 +9,12 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-    req.session.test="bla"
-    if (req.session.test) {
-         console.log(`we have ${req.session.test}`)
-    }
-    res.render("home/index");
+    Post.find({})
+    .then(posts=>{
+        res.render("home/index",{
+            posts: posts
+        });
+    })
 });
 
 router.get('/about', (req, res) => {

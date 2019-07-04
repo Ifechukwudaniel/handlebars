@@ -13,7 +13,7 @@ const flash = require("connect-flash")
 mongoose.Promise = global.Promise
 
 // helper  function
-const {select} = require("./helpers/helper-handlebars")
+const {select,formatDate} = require("./helpers/helper-handlebars")
 
 //use body parser 
 app.use(bodyParser.json());
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 });
 
 //handlebar 
-app.engine("handlebars", exphan({defaultLayout:"home",helpers:{select: select}}))
+app.engine("handlebars", exphan({defaultLayout:"home",helpers:{select: select,formatDate:formatDate}}))
 app.set('view engine', 'handlebars');
 
 //home route
