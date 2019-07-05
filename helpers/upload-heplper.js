@@ -13,7 +13,5 @@ module.exports= {
             }
           return false
        },
-       formatDate: (date)=>{
-         return moment.calendarFormat(date)
-      }
+      
 }

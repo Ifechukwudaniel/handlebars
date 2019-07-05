@@ -17,6 +17,18 @@ router.get('/', (req, res) => {
     })
 });
 
+//get one post
+router.get('/post/:id', (req, res) => {
+      const id = req.params.id
+    Post.findOne({_id:id})
+    .then(post=>{
+        res.render("home/post")
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+});
+
 router.get('/about', (req, res) => {
      res.render("home/about")
 });
