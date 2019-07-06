@@ -1,29 +1,40 @@
-<h1>categories</h1>
+
 <div class="row">
     <div class="col-sm-4">
-        <form action="/admin/categories/create">
+        <h1> Create categories</h1>
+        <form action="/admin/categories/create" method="POST">
          <div class="form-group">
              <label for="name">name</label>
              <input type="text" name="name" id="name" class="form-control">
          </div>
          <button type="submit" class="btn btn-primary">Create a Category</button>
         </form>
+          <br>
+    <br>
     </div>
-    <div class="col-sm-8">
-        <table>
+    <hr>
+    <div class="col-sm-10">
+        <h1>Current Categories</h1>
+        <table class="table">
             <thead>
                 <tr>
                     <th>id</th>
-                    <th>name</th>
-                    <th>date</th>
+                    <th>Name</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
+                {{#each categories}}
                 <tr>
-                    <td>1233</td>
-                    <td>NodeJS</td>
-                    <td>jan 1 2</td>
+                    <td>{{_id}}</td>
+                    <td>{{name}}</td>
+                    <td>{{formatDate date "MMMM Do YYYY"}} at {{formatDate  date "LT"}}</td>
+                    <td> <a href="/admin/categories/edit/{{_id}}" class="btn btn-info">Edit</a> </td>
+                    <td>
+                        <form action="/admin/categories/{{_id}}?method=DELETE" method="post"><input type="submit" class="btn btn-danger" value="Delete"></form>
+                    </td>
                 </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>

@@ -7,8 +7,24 @@ router.use((req,res,next)=>{
     next()
 })
 
+router.post('/create', (req, res) => {
+    const newCategory = new Category({
+     name: req.body.name
+    })
+    newCategory.save()
+    .then(()=>{
+       res.redirect('/admin/categories');
+    }
+    )
+});
+
 router.get('/', (req, res) => {
-    res.render("admin/categories/index");
+  Category.find({})
+    .then(categories=>{
+        res.render("admin/categories/index" , {
+            categories:categories
+        });
+    })
 });
 
 module.exports = router

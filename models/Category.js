@@ -5,6 +5,10 @@ const CategorySchema = Schema({
     name:{
         type:String,
         required:true
+    },
+    date :{
+        type:Date,
+        default:Date.now()
     }
 })
 
