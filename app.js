@@ -61,10 +61,12 @@ app.set('view engine', 'handlebars');
 const admin = require("./routes/admin/index")
 const home= require("./routes/home/index")
 const posts = require("./routes/admin/post")
+const categories = require("./routes/admin/categories")
 app.use("/admin", admin);
 app.use("/", home);
 app.use("/admin/posts", posts);
+app.use("/admin/categories",categories);
 
-app.listen(3000, () => {
+app.listen(10000, () => {
     console.log(`Server started on port`);
 });

@@ -29,7 +29,7 @@ To build the application you should npm build the app
 
 ## Versioning
 
-We use github branch for versioning ,we arecurrently at version 1.0.0.0
+We use github branch for versioning ,we are currently at version 1.0.0.0
 
 ## Authors
 

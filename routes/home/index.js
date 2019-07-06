@@ -22,7 +22,9 @@ router.get('/post/:id', (req, res) => {
       const id = req.params.id
     Post.findOne({_id:id})
     .then(post=>{
-        res.render("home/post")
+        res.render("home/post",{
+            post: post
+        })
     })
     .catch(err=>{
         console.log(err)
