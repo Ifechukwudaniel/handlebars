@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Post = require("../../models/Post")
-const {isEmpty,UploadPath,I} = require("../../helpers/upload-heplper")
+const {isEmpty,UploadPath} = require("../../helpers/upload-heplper")
 const uuid = require("uuid/v1")
 const fs = require("fs")
+const Category = require("../../models/Category")
 
 router.all('/*', (req, res, next) => {
     req.app.locals.layout ="admin"
@@ -13,6 +14,7 @@ router.all('/*', (req, res, next) => {
 
 router.get('/', (req, res) => {
     Post.find({})
+    .populate("category")
     .then(posts=>{
         res.render("admin/posts/index",{
             posts: posts
@@ -27,7 +29,12 @@ router.get('/', (req, res) => {
 
 //create a post fprm
 router.get('/create', (req, res) => {
-    res.render("admin/posts/create");
+     Category.find({})
+     .then(categories=>{
+        res.render("admin/posts/create", {
+            categories:categories
+        });
+     })
 });
 
 //submit post data in the databse
@@ -70,7 +77,8 @@ router.post('/create', (req, res) => {
             status:req.body.status,
             allowcomments: allowcomments,
             body: req.body.body,
-            file: filename
+            file: filename,
+            category: req.body.category
         })
 
         newpost.save()
@@ -90,12 +98,16 @@ router.get('/edit/:id', (req, res) => {
     const id = req.params.id
     Post.findOne({_id:id})
     .then(post=>{
-       res.render("admin/posts/edit", {
-           post:post
-       });
+      Category.find({})
+     .then(categories=>{
+        res.render("admin/posts/edit", {
+            categories:categories,
+            post:post
+        });
+     })
     })
     .catch(err=>{
-     
+       
     })
 });
 
@@ -121,6 +133,7 @@ router.post('/edit/:id', (req, res) => {
          post.allowComments=allowComments,
          post.body = req.body.body
          post.file=filename
+         post.category=req.body.category
          post.save()
          .then(data=>{
             req.flash("success_message", `update was created sucessfully`)
