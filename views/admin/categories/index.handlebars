@@ -31,7 +31,7 @@
                     <td>{{formatDate date "MMMM Do YYYY"}} at {{formatDate  date "LT"}}</td>
                     <td> <a href="/admin/categories/edit/{{_id}}" class="btn btn-info">Edit</a> </td>
                     <td>
-                        <form action="/admin/categories/{{_id}}?method=DELETE" method="post"><input type="submit" class="btn btn-danger" value="Delete"></form>
+                        <form action="/admin/categories/delete/{{_id}}" method="post"><input type="submit" class="btn btn-danger" value="Delete"></form>
                     </td>
                 </tr>
                 {{/each}}

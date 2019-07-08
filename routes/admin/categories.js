@@ -18,6 +18,7 @@ router.post('/create', (req, res) => {
     )
 });
 
+
 router.get('/', (req, res) => {
   Category.find({})
     .then(categories=>{
@@ -26,5 +27,31 @@ router.get('/', (req, res) => {
         });
     })
 });
+
+router.get('/edit/:id', (req, res) => {
+      Category.findOne({_id: req.params.id})
+      .then(category=>{
+        res.render("admin/categories/edit" , {
+            category:category
+        });
+      })
+  });
+
+  router.post('/edit/:id', (req, res) => {
+    Category.findOne({_id:req.params.id})
+    .then(category=>{
+        category.name = req.body.name
+        category.save()
+        res.redirect('/admin/categories/');
+    })
+ });
+
+
+  router.post('/delete/:id', (req, res) => {
+     Category.deleteOne({_id:req.params.id})
+     .then(data=>{
+         res.redirect('/admin/categories/');
+     })
+  });
 
 module.exports = router
