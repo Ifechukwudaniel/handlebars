@@ -7,6 +7,7 @@ const bodyParser = require("body-parser")
 const upload = require("express-fileupload")
 const session = require("express-session")
 const flash = require("connect-flash")
+const {mongoDb} = require("./config/database")
 
 //plugin mongoose function
 
@@ -23,7 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(upload());
 
 //mongoose connetion
-mongoose.connect("mongodb://localhost/cms", {useNewUrlParser:true})
+mongoose.connect(mongoDb,{useCreateIndex:true})
 .then(db=>{
     console.log("conneted to database")
 })

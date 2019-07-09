@@ -116,4 +116,8 @@ router.get('/login', (req, res) => {
     res.render("home/login")
 });
 
+router.post('/login', (req, res) => {
+   res.send("kekd");
+});
+
 module.exports = router
