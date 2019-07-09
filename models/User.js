@@ -21,4 +21,8 @@ const UserSchema = Schema({
     }
 })
 
+UserSchema.methods.testMethod= function(){
+    console.log("jdendednewdnewdwwdwa")
+}
+
 module.exports= mongoose.model("users",UserSchema)

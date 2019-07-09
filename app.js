@@ -8,6 +8,7 @@ const upload = require("express-fileupload")
 const session = require("express-session")
 const flash = require("connect-flash")
 const {mongoDb} = require("./config/database")
+const passport = require("passport")
 
 //plugin mongoose function
 
@@ -53,6 +54,10 @@ app.use((req, res, next) => {
     next()
 
 });
+
+//Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 //handlebar 
 app.engine("handlebars", exphan({defaultLayout:"home",helpers:{select: select,formatDate:formatDate}}))
