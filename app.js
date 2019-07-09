@@ -54,7 +54,6 @@ app.use((req, res, next)=>{
     res.locals.error_message = req.flash('error_message');
     res.locals.form_errors = req.flash('form_errors');
     res.locals.error = req.flash('error');
-    console.log(res.locals.user)
     next();
 });
 
