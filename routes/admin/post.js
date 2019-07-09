@@ -27,6 +27,8 @@ router.get('/', (req, res) => {
 });
 
 
+
+
 //create a post fprm
 router.get('/create', (req, res) => {
      Category.find({})

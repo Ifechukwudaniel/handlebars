@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(upload());
 
 //mongoose connetion
-mongoose.connect(mongoDb,{useCreateIndex:true})
+mongoose.connect(mongoDb,{useCreateIndex:true,useNewUrlParser:true})
 .then(db=>{
     console.log("conneted to database")
 })
