@@ -5,7 +5,7 @@ const Category = require("../../models/Category")
 const User = require("../../models/User")
 const bcrypt = require("bcryptjs")
 const passport = require("passport")
-const LocalStratagy = require("passport-local").Strategy
+const LocalStrategy = require("passport-local").Strategy
 
 
 router.all('/*', (req, res, next) => {
@@ -114,21 +114,19 @@ router.post('/register', (req, res) => {
 });
 
 //app login
-passport.use(new LocalStratagy({usernameField:"email"},(email,password,done)=>{
-    User.findOne({email:email})
-    .then(user=>{
+passport.use(new LocalStrategy({usernameField: 'email'}, (email, password, done)=>{
+    User.findOne({email: email}).then(user=>{
         if(!user) return done(null, false, {message: 'No user found'});
         bcrypt.compare(password, user.password, (err, matched)=>{
-         if(err) return err
-          if(matched){
-            return done(null, user)  
-          } 
-          else{
-              return done(null,false, {message:"Password did not match"})
-          }
-       })
-    })
-}))
+            if(err) return err;
+            if(matched){
+                return done(null, user);
+            } else {
+                return done(null, false, { message: 'Incorrect password' });
+            }
+        });
+    });
+}));
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
@@ -145,13 +143,11 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
-    passport.authenticate('local', 
-    { 
-    successRedirect: '/admin',
-    failureRedirect: '/login',
-    failureFlash: true,
-    successFlash:true
-    })(req,res,next)
+    passport.authenticate('local', {
+        successRedirect: '/admin',
+        failureRedirect: '/login',
+        failureFlash: true
+    })(req, res, next);
 });
 
 module.exports = router
